@@ -80,7 +80,7 @@
      <input type="text" name="first_name" placeholder="First Name" required>  
      <input type="text" name="middle_name" placeholder="Middle Name">  
      <input type="text" name="last_name" placeholder="Last Name" required>  
-     <input type="text" name="username" placeholder="Username" required>  
+     <input class = "username-realtime" type="text" name="username" placeholder="Username" required>  
      <input type="password" name="password" placeholder="Password" required>
      <input type="password" name="con_password" placeholder="Confirm Password" required>
      <input type="submit" value="Sign Up">
@@ -91,5 +91,25 @@
       comment added for git check
     </div> -->
   </div>
+  <script>
+    const username = document.querySelector('.username-realtime');
+    document.addEventListener("input", function() {
+      if (username.value.length == 0) {
+        username.style.border = "1px solid #ccc";
+        return;
+      } else {
+        fetch('/check_username?username=' + encodeURIComponent(username.value))
+          .then(response => response.json())
+          .then(data => {
+            if (data['status'] === 'ok') {
+              username.style.border = "1px solid green";
+            } else {
+              username.style.border = "1px solid red";
+            }
+          });
+      }
+    });
+  </script>
+  
 </body>
 </html>

@@ -1,8 +1,15 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
+from email_site.models import User
 
+def check_username(request):
+    username = request.POST.get('username', None)
+    data = {
+        'is_taken': User.objects.filter(username__iexact=username).exists()
+    }
+    return JsonResponse(data)
 def index(request):
     return render(request,'login_page.html')
 
